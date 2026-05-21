@@ -1,0 +1,6 @@
+*.exe
+*.o
+*.out
+.vscode/
+sudoku_saving_file*.txt
+game*.txt
