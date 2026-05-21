@@ -50,12 +50,12 @@ SudokuGame.exe
 
 ## 🎮 How to Play
 
-**Navigation**: Use Arrow keys or W, A, S, D to traverse the grid.
-**Insertion**: Simply press numbers 1 through 9 on an empty cell (.).
-**Undo**: Press U to step backward into your match history.
-**Hint**: Press H to automatically solve an empty cell (Max 10 per account).
-**Save Game**: Press G mid-match to dump current arrays into a save file.
-**Pause Menu**: Hit Esc anytime to halt execution blocks.
+* **Navigation**: Use Arrow keys or W, A, S, D to traverse the grid.
+* **Insertion**: Simply press numbers 1 through 9 on an empty cell (.).
+* **Undo**: Press U to step backward into your match history.
+* **Hint**: Press H to automatically solve an empty cell (Max 10 per account).
+* **Save Game**: Press G mid-match to dump current arrays into a save file.
+* **Pause Menu**: Hit Esc anytime to halt execution blocks.
 
 ---
 
