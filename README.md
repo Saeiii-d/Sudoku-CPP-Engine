@@ -16,13 +16,13 @@ A terminal-based Sudoku game written in C++ with object-oriented components, cro
 
 ---
 
-## Architectural Overview
+## 🛠️ Architectural Overview
 
-- **Player**: Stores the username, transformed local password, score, wins, losses, hints, and move statistics.
-- **UserManager**: Handles registration, login, loading and saving player records, and leaderboard sorting.
-- **SudokuBoard**: Stores the puzzle grids, validates candidate values, solves puzzles using backtracking, and checks solution uniqueness.
-- **GameEngine**: Manages rendering, keyboard input, timing, hints, undo operations, saving games, and the main game loop.
-- **CustomTermUI**: Provides terminal operations for Windows and POSIX-compatible environments, including cursor movement, screen clearing, and keyboard input.
+- **`Player`**: Stores player credentials, scores, wins, losses, hints, and move statistics.
+- **`UserManager`**: Handles registration, login, loading and saving player data, and leaderboard sorting.
+- **`SudokuBoard`**: Stores puzzle grids, validates values, solves puzzles using backtracking, and checks solution uniqueness.
+- **`GameEngine`**: Manages rendering, input, timing, hints, undo operations, saving games, and the main game loop.
+- **`CustomTermUI`**: Provides terminal input and display operations for Windows and POSIX-compatible systems.
 
 ---
 
