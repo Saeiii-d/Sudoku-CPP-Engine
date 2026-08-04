@@ -16,14 +16,13 @@ A terminal-based Sudoku game written in C++ with object-oriented components, cro
 
 ---
 
-## 🛠️ Architectural Overview
+## Architectural Overview
 
-The project is structured under high-cohesion design patterns:
-
-- **`Player`**: Encapsulates statistics data metrics and secure credential routines.
-- **`UserManager`**: Governs persistence algorithms (loading/saving leaderboards), session state-machines, and dynamic ranking sorting routines.
-- **`SudokuBoard`**: Handles algorithmic back-tracking solver constraints, unique matrix cell mutation validation, and sub-grid analysis.
-- **`GameEngine`**: Coordinates cross-platform console color buffers, HUD coordinate placements, non-blocking hardware interrupt capturing, and chronological event sequences.
+- **Player**: Stores the username, transformed local password, score, wins, losses, hints, and move statistics.
+- **UserManager**: Handles registration, login, loading and saving player records, and leaderboard sorting.
+- **SudokuBoard**: Stores the puzzle grids, validates candidate values, solves puzzles using backtracking, and checks solution uniqueness.
+- **GameEngine**: Manages rendering, keyboard input, timing, hints, undo operations, saving games, and the main game loop.
+- **CustomTermUI**: Provides terminal operations for Windows and POSIX-compatible environments, including cursor movement, screen clearing, and keyboard input.
 
 ---
 
@@ -38,7 +37,7 @@ Make sure you have a standard C++ compiler installed (e.g., GCC/MinGW for Window
 Navigate to the root directory containing the source files and execute:
 
 ```bash
-g++ -O3 src/main.cpp -o SudokuGame
+g++ -std=c++17 -Wall -Wextra -pedantic src/main.cpp -o SudokuGame
 ```
 
 ## Running the game
@@ -53,7 +52,7 @@ SudokuGame.exe
 
 ## 🎮 How to Play
 
-- **Navigation**: Use Arrow keys or W, A, S, D to traverse the grid.
+- **Navigation**: Use W, A, S, and D. Arrow keys are supported on Windows terminals.
 - **Insertion**: Simply press numbers 1 through 9 on an empty cell (.).
 - **Undo**: Press U to step backward into your match history.
 - **Hint**: Press H to automatically solve an empty cell (Max 10 per account).

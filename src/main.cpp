@@ -1,4 +1,19 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <chrono>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <random>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "CustomTermUI.hpp"
 
 using namespace std;
