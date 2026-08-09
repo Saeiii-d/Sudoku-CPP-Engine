@@ -8,7 +8,7 @@ A terminal-based Sudoku game written in C++ with object-oriented components, cro
 
 - **Non-Blocking Timer and Input Loop:** The game periodically updates the timer while polling keyboard input without requiring the player to press Enter.
 - **Solution-Based Move Validation:** Player moves are validated against the generated solution, and the puzzle generator checks that the puzzle has a unique solution.
-- **Object-Oriented Architecture:** Organizes the application into focused classes such as `GameEngine`, `SudokuBoard`, `UserManager`, and `Player`, separating board logic, player management, and game orchestration.- **Object-Oriented Architecture:** Refactored into highly cohesive classes (`GameEngine`, `SudokuBoard`, `UserManager`, and `Player`) separating data logic from the rendering pipeline.
+- **Object-Oriented Architecture:** Organizes the application into focused classes such as `GameEngine`, `SudokuBoard`, `UserManager`, and `Player`, separating board logic, player management, and game orchestration.
 - **Local Player Profiles:** Supports registration and login for multiple players, keeping track of scores, win/loss history, and hints used.
 - **Local Credential Obfuscation:** Passwords are transformed with a simple reversible byte operation and encoded as hexadecimal text before local storage. Legacy readable records are migrated when possible. This is intended only for a student project and is not production-grade password security.
 - **Undo History Stack:** Uses `std::stack` to restore the most recent accepted move while also reversing its score and session correct-move contribution.
