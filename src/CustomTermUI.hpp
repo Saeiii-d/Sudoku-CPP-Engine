@@ -76,7 +76,8 @@ public:
                 cols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
                 rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
             } else {
-                cols = 80; rows = 25; // Fallback defaults
+                cols = 80;
+                rows = 25; // Fallback defaults
             }
         #else
             struct winsize w;
@@ -84,7 +85,8 @@ public:
                 cols = w.ws_col;
                 rows = w.ws_row;
             } else {
-                cols = 80; rows = 25; // Fallback defaults
+                cols = 80;
+                rows = 25; // Fallback defaults
             }
         #endif
     }
@@ -94,12 +96,33 @@ public:
         #if defined(_WIN32) || defined(_WIN64)
             return _kbhit() != 0;
         #else
-            // Low-level asynchronous select polling for POSIX streams
+            // POSIX terminals are normally canonical. Temporarily disable
+            // canonical processing and echo so select() can detect one key.
+            struct termios oldt, newt;
+
+            if (tcgetattr(STDIN_FILENO, &oldt) != 0) {
+                return false;
+            }
+
+            newt = oldt;
+            newt.c_lflag &= ~(ICANON | ECHO);
+            newt.c_cc[VMIN] = 0;
+            newt.c_cc[VTIME] = 0;
+
+            if (tcsetattr(STDIN_FILENO, TCSANOW, &newt) != 0) {
+                return false;
+            }
+
             struct timeval tv = {0L, 0L};
             fd_set fds;
             FD_ZERO(&fds);
             FD_SET(STDIN_FILENO, &fds);
-            return select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0;
+
+            bool ready =
+                select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0;
+
+            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+            return ready;
         #endif
     }
 
@@ -111,12 +134,20 @@ public:
             // Switch terminal state temporarily to Raw Mode to bypass line buffering
             struct termios oldt, newt;
             int ch;
-            tcgetattr(STDIN_FILENO, &oldt);
+
+            if (tcgetattr(STDIN_FILENO, &oldt) != 0) {
+                return getchar();
+            }
+
             newt = oldt;
-            newt.c_lflag &= ~(ICANON | ECHO); // Disable canonical processing and echo
-            tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+            newt.c_lflag &= ~(ICANON | ECHO);
+
+            if (tcsetattr(STDIN_FILENO, TCSANOW, &newt) != 0) {
+                return getchar();
+            }
+
             ch = getchar();
-            tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // Restore original attributes
+            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
             return ch;
         #endif
     }
