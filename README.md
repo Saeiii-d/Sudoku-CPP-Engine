@@ -8,11 +8,11 @@ A terminal-based Sudoku game written in C++ with object-oriented components, cro
 
 - **Non-Blocking Timer and Input Loop:** The game periodically updates the timer while polling keyboard input without requiring the player to press Enter.
 - **Solution-Based Move Validation:** Player moves are validated against the generated solution, and the puzzle generator checks that the puzzle has a unique solution.
-- **Object-Oriented Architecture:** Refactored into highly cohesive classes (`GameEngine`, `SudokuBoard`, `UserManager`, and `Player`) separating data logic from the rendering pipeline.
+- **Object-Oriented Architecture:** Organizes the application into focused classes such as `GameEngine`, `SudokuBoard`, `UserManager`, and `Player`, separating board logic, player management, and game orchestration.- **Object-Oriented Architecture:** Refactored into highly cohesive classes (`GameEngine`, `SudokuBoard`, `UserManager`, and `Player`) separating data logic from the rendering pipeline.
 - **Local Player Profiles:** Supports registration and login for multiple players, keeping track of scores, win/loss history, and hints used.
-- **Local Credential Obfuscation:** Passwords are transformed before being stored locally. This mechanism is intended for a student project and should not be considered production-grade password security.
-- **Smart History Stack (Undo System):** Implements `std::stack` for lightweight and stack-based move history tracking.
-- **Persistent State Saves:** Allows active sessions to save games, recording precise remaining times, applied grids, and matching session-specific correct/incorrect move history.
+- **Local Credential Obfuscation:** Passwords are transformed with a simple reversible byte operation and encoded as hexadecimal text before local storage. Legacy readable records are migrated when possible. This is intended only for a student project and is not production-grade password security.
+- **Undo History Stack:** Uses `std::stack` to restore the most recent accepted move while also reversing its score and session correct-move contribution.
+- **Validated Save/Load System:** Saves the remaining time, mistake count, session move counters, and the initial, current, and solution grids. Loaded saves are validated before being applied to the active board.
 
 ---
 
@@ -56,8 +56,8 @@ SudokuGame.exe
 - **Insertion**: Simply press numbers 1 through 9 on an empty cell (.).
 - **Undo**: Press U to step backward into your match history.
 - **Hint**: Press H to automatically solve an empty cell (Max 10 per account).
-- **Save Game**: Press G mid-match to dump current arrays into a save file.
-- **Pause Menu**: Hit Esc anytime to halt execution blocks.
+- **Save Game**: Press G during a game to save the current puzzle state, remaining time, mistakes, and session move counters.
+- **Pause / Resume**: Press Esc to pause or resume the active game and timer.
 
 ---
 
