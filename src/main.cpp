@@ -222,7 +222,7 @@ public:
 
                 // Migrate readable legacy records to the hex-safe format.
                 if (p.encodedPassword != targetEncoding) {
-                    p.encodedPassword = legacyEncoding;
+                    p.encodedPassword = targetEncoding;
                     saveLeaderboard();
                 }
 
