@@ -26,6 +26,22 @@ A terminal-based Sudoku game written in C++ with object-oriented components, cro
 
 ---
 
+## 📁 Project Structure
+
+```text
+Sudoku-CPP-Engine/
+├── src/
+│   ├── main.cpp
+│   └── CustomTermUI.hpp
+├── README.md
+├── LICENSE.txt
+└── .gitignore
+```
+
+Most application logic is currently implemented in main.cpp, while platform-specific terminal operations are isolated in CustomTermUI.hpp.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -54,10 +70,24 @@ SudokuGame.exe
 
 - **Navigation**: Use W, A, S, and D. Arrow keys are supported on Windows terminals.
 - **Insertion**: Simply press numbers 1 through 9 on an empty cell (.).
-- **Undo**: Press U to step backward into your match history.
+- **Undo**: Press U to undo the most recent accepted move or hint-generated fill in the current game.
 - **Hint**: Press H to automatically solve an empty cell (Max 10 per account).
 - **Save Game**: Press G during a game to save the current puzzle state, remaining time, mistakes, and session move counters.
 - **Pause / Resume**: Press Esc to pause or resume the active game and timer.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [`LICENSE.txt`](LICENSE.txt) for details.
+
+---
+
+## Related Article
+
+For a detailed explanation of the puzzle-generation algorithm, backtracking solver, terminal input handling, game loop, persistence, and implementation trade-offs, see:
+
+**[Building a Terminal Sudoku Game in C++ with Input Polling and Backtracking](https://medium.com/@saeiiid.khazaei/how-i-built-a-real-time-non-blocking-sudoku-game-engine-in-modern-c-70be5c8b88dc)**
 
 ---
 
