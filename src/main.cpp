@@ -207,22 +207,22 @@ public:
     }
 
     bool loginUser(const string& username, const string& password) {
-        const string targetHash = Player::encodePassword(password);
-        const string legacyHash = Player::legacyObfuscatePassword(password);
+        const string targetEncoding = Player::encodePassword(password);
+        const string legacyEncoding = Player::legacyObfuscatePassword(password);
 
         for (auto& p : players) {
             if (
                 p.name == username
                 && (
-                    p.encodedPassword == targetHash
-                    || p.encodedPassword == legacyHash
+                    p.encodedPassword == targetEncoding
+                    || p.encodedPassword == legacyEncoding
                 )
             ) {
                 currentUser = username;
 
                 // Migrate readable legacy records to the hex-safe format.
-                if (p.encodedPassword != targetHash) {
-                    p.encodedPassword = targetHash;
+                if (p.encodedPassword != targetEncoding) {
+                    p.encodedPassword = legacyEncoding;
                     saveLeaderboard();
                 }
 
