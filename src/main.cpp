@@ -22,20 +22,16 @@ using namespace std;
 // Defines & Constants
 const int BOARD_SIZE = 9;
 const int SUBGRID = 3;
-const int MAX_PASS_LEN = 20;
-const string SAVE_DIR = "./";
 const string LEADERBOARD_FILE = "leaderboard.txt";
 
 // ANSI Colors (Using the custom class constants/strings)
 const string RED = "\x1b[31m";
 const string GREEN = "\x1b[32m";
 const string YELLOW = "\x1b[33m";
-const string BLUE = "\x1b[34m";
 const string LIGHT_BLUE = "\033[94m";
 const string CYAN = "\033[36m";
 const string PURPLE = "\x1b[35m";
 const string WHITE = "\x1b[37m";
-const string LIGHT_ORANGE = "\x1b[38;5;214m";
 const string RESET = "\x1b[0m";
 const string BOLD = "\x1b[1m";
 const string BROWN = "\x1b[38;2;164;93;2m";
@@ -61,14 +57,13 @@ struct Move {
     int row;
     int col;
     int oldValue;
-    int newValue;
 };
 
 // Player Class
 class Player {
 public:
     string name;
-    string passwordHash;
+    string encodedPassword;
     int hints = 0;
     int score = 0;
     int wins = 0;
@@ -89,7 +84,7 @@ public:
         return transformed;
     }
 
-    static string hashPassword(const string& pass) {
+    static string encodePassword(const string& pass) {
         const string transformed = legacyObfuscatePassword(pass);
 
         ostringstream encoded;
@@ -157,7 +152,7 @@ public:
         while (
             file
             >> p.name
-            >> p.passwordHash
+            >> p.encodedPassword
             >> p.score
             >> p.wins
             >> p.losses
@@ -181,7 +176,7 @@ public:
         for (const auto& p : players) {
             file
                 << p.name << " "
-                << p.passwordHash << " "
+                << p.encodedPassword << " "
                 << p.score << " "
                 << p.wins << " "
                 << p.losses << " "
@@ -203,7 +198,7 @@ public:
 
         Player newPlayer;
         newPlayer.name = username;
-        newPlayer.passwordHash = Player::hashPassword(password);
+        newPlayer.encodedPassword = Player::encodePassword(password);
 
         players.push_back(newPlayer);
         saveLeaderboard();
@@ -212,22 +207,22 @@ public:
     }
 
     bool loginUser(const string& username, const string& password) {
-        const string targetHash = Player::hashPassword(password);
+        const string targetHash = Player::encodePassword(password);
         const string legacyHash = Player::legacyObfuscatePassword(password);
 
         for (auto& p : players) {
             if (
                 p.name == username
                 && (
-                    p.passwordHash == targetHash
-                    || p.passwordHash == legacyHash
+                    p.encodedPassword == targetHash
+                    || p.encodedPassword == legacyHash
                 )
             ) {
                 currentUser = username;
 
                 // Migrate readable legacy records to the hex-safe format.
-                if (p.passwordHash != targetHash) {
-                    p.passwordHash = targetHash;
+                if (p.encodedPassword != targetHash) {
+                    p.encodedPassword = targetHash;
                     saveLeaderboard();
                 }
 
@@ -545,13 +540,22 @@ private:
                     i == cursorRow
                     && j == cursorCol
                 ) {
-                    printf(
-                        "%s%s %d %s",
-                        BACK_LIGHERT_BROWN.c_str(),
-                        DARK_BROWN.c_str(),
-                        board.getCell(i, j),
-                        RESET.c_str()
-                    );
+                    if (board.getCell(i, j) == 0) {
+                        printf(
+                            "%s%s . %s",
+                            BACK_LIGHERT_BROWN.c_str(),
+                            DARK_BROWN.c_str(),
+                            RESET.c_str()
+                        );
+                    } else {
+                        printf(
+                            "%s%s %d %s",
+                            BACK_LIGHERT_BROWN.c_str(),
+                            DARK_BROWN.c_str(),
+                            board.getCell(i, j),
+                            RESET.c_str()
+                        );
+                    }
                 } else if (board.getCell(i, j) == 0) {
                     printf(
                         " %s.%s ",
@@ -764,7 +768,6 @@ private:
                         i,
                         j,
                         0,
-                        correctVal
                     });
 
                     board.setCell(
@@ -1149,8 +1152,7 @@ private:
                             board.getCell(
                                 cursorRow,
                                 cursorCol
-                            ),
-                            num
+                            )
                         });
 
                         board.setCell(
